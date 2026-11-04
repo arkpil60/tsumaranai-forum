@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +7,72 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <main>
-        <h1>Tsumaranai Forum</h1>
-        <p>A little corner of the old internet.</p>
-        <p>Under construction — つまらない</p>
+    <header class="site-header">
+        <div class="container header-content">
+            <div>
+                <a class="brand" href="{{ url_for('index') }}">
+                    Tsumaranai Forum
+                    <span>つまらない</span>
+                </a>
+                <p class="subtitle">Your little corner of the internet ^_^</p>
+            </div>
+            <span class="preview-label">Tays Preview 0.1</span>
+        </div>
+    </header>
+
+    <main class="container">
+        <nav class="breadcrumbs">
+            <a href="{{ url_for('index') }}">Home</a>
+            {% if active_category %}
+                <span>/</span>
+                <strong>{{ active_category.title }}</strong>
+            {% endif %}
+        </nav>
+
+        {% if active_category %}
+            <section class="panel">
+                <div class="panel-title">
+                    # {{ active_category.title }}
+                </div>
+                <div class="empty-state">
+                    <h2>{{ active_category.title }}</h2>
+                    <p>{{ active_category.description }}</p>
+                    <p class="muted">No topics yet. Coming soon!</p>
+                </div>
+            </section>
+        {% else %}
+            <section class="panel">
+                <div class="panel-title">Forum sections</div>
+
+                {% for category in categories %}
+                    <a class="category" href="{{ url_for('category_page', slug=category.slug) }}">
+                        <span class="category-icon">✿</span>
+                        <span class="category-details">
+                            <strong>{{ category.title }}</strong>
+                            <small>{{ category.description }}</small>
+                        </span>
+                        <span class="category-arrow">›</span>
+                    </a>
+                {% else %}
+                    <div class="empty-state">
+                        No categories have been created yet.
+                    </div>
+                {% endfor %}
+            </section>
+        {% endif %}
+
+        <aside class="notice">
+            <strong>Under construction!</strong>
+            <p>
+                Tsumaranai is currently in early development.
+                Registration, topics and replies are coming soon.
+            </p>
+        </aside>
     </main>
+
+    <footer>
+        <p>Tsumaranai Forum — A little corner of the old internet.</p>
+        <span>✿ つまらない ✿</span>
+    </footer>
 </body>
 </html>
