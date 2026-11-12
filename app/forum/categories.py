@@ -1,6 +1,6 @@
 from psycopg.rows import dict_row
 
-from .db import get_connection
+from ..db import get_connection
 
 
 def get_categories():

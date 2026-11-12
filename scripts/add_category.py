@@ -1,6 +1,6 @@
 import argparse
 
-from app.categories import create_category
+from app.forum.categories import create_category
 
 
 def main():

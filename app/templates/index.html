@@ -10,7 +10,7 @@
     <header class="site-header">
         <div class="container header-content">
             <div>
-                <a class="brand" href="{{ url_for('index') }}">
+                <a class="brand" href="{{ url_for('forum.index') }}">
                     Tsumaranai Forum
                     <span>つまらない</span>
                 </a>
@@ -22,7 +22,7 @@
 
     <main class="container">
         <nav class="breadcrumbs">
-            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('forum.index') }}">Home</a>
             {% if active_category %}
                 <span>/</span>
                 <strong>{{ active_category.title }}</strong>
@@ -45,7 +45,7 @@
                 <div class="panel-title">Forum sections</div>
 
                 {% for category in categories %}
-                    <a class="category" href="{{ url_for('category_page', slug=category.slug) }}">
+                    <a class="category" href="{{ url_for('forum.category_page', slug=category.slug) }}">
                         <span class="category-icon">✿</span>
                         <span class="category-details">
                             <strong>{{ category.title }}</strong>
