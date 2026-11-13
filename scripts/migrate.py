@@ -4,15 +4,23 @@ from pathlib import Path
 
 from app.db import get_connection
 
-
 MIGRATIONS_DIR = (
     Path(__file__).resolve().parent.parent / "migrations"
 )
 
+MIGRATION_LOCK_ID = 712026
 
 def main():
+    applied = []
+    skipped = []
+
     with get_connection() as connection:
         with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT pg_advisory_xact_lock(%s)",
+                (MIGRATION_LOCK_ID,),
+            )
+
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS schema_migrations (
                     filename TEXT PRIMARY KEY,
@@ -40,7 +48,7 @@ def main():
                             f"Applied migration was modified: {path.name}"
                         )
 
-                    print(f"SKIP: {path.name}")
+                    skipped.append(path.name)
                     continue
 
                 cursor.execute(content)
@@ -51,7 +59,14 @@ def main():
                     (path.name, checksum),
                 )
 
-                print(f"APPLIED: {path.name}")
+                applied.append(path.name)
+
+
+    for filename in skipped:
+        print(f"SKIP: {filename}")
+
+    for filename in applied:
+        print(f"APPLIED: {filename}")
 
 
 if __name__ == "__main__":
